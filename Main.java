@@ -1,8 +1,8 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * Don Ton
- * dt22776
+ * Manuel Gomez	
+ * mlg3454
  * <Student1 5-digit Unique No.>
  * <Student2 Name>
  * <Student2 EID>
