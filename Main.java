@@ -4,8 +4,8 @@
  * Manuel Gomez	
  * mlg3454
  * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
+ * Don Ton
+ * dt22776
  * <Student2 5-digit Unique No.>
  * Slip days used: <0>
  * Git URL:
@@ -37,7 +37,8 @@ public class Main {
 		String first = twoWords.get(0);
 		String last = twoWords.get(1);
 		initialize();
-		printLadder(getWordLadderBFS(first, last));
+		printLadder(getWordLadderDFS(first, last));
+		//printLadder(getWordLadderBFS(first, last));
 
 		// TODO methods to read in words, output ladder
 	}
@@ -73,56 +74,109 @@ public class Main {
 	// Returned list should be ordered start to end. Include start and end.
 	// Return empty list if no ladder.
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		Set<String> dict = makeDictionary();
-//		GetDFS.getShortestDFS(start, end, dict);
+		/*
+		 * Set<String> dict = new HashSet<String>(); dict.add("HUMOR");
+		 * dict.add("RUMOR"); dict.add("TUMOR"); dict.add("HUNOR");
+		 * dict.add("HONOR");
+		 */
+		Set<String> set = new HashSet<String>();
+		ArrayList<String> ladder = new ArrayList<String>();
 
-		return null; // replace this line later with real return
+		ladder = helperDFS(start, end, set, dict, ladder);
+		return ladder;
 	}
 
+	private static ArrayList<String> helperDFS(String start, String end, Set<String> usedWords, Set<String> dict,
+			ArrayList<String> ladder) {
+
+		boolean flag = false;
+		if (start.equals(end)) {
+			ladder.add(start);
+			return ladder;
+		}
+		for (String string : dict) {
+			if (oneDiff(start, string) && !usedWords.contains(string)) {
+				flag = true;
+			}
+		}
+		if (!flag) {
+			return null;
+		}
+		usedWords.add(start);
+		for (String string : dict) {
+			if (!usedWords.contains(string) && oneDiff(start, string)) {
+				ArrayList<String> temp = helperDFS(string, end, usedWords, dict, ladder);
+				if (!ladder.isEmpty()) {
+					ladder.add(0, start);
+					return ladder;
+				}
+			}
+		}
+		return null;
+
+	}
+
+	/*
+	 * public static boolean findDFS(String start, String end, Set<String> set,
+	 * Set<String> dict) { if (findNext(start, set, dict)) { return false; }
+	 * set.add(start); if (start.equals(end)) { return true; } else { for
+	 * (String string : dict) { if (!set.contains(string)){ boolean found =
+	 * findDFS(string, end, set, dict); if(found){ return true; } } } return
+	 * false; } }
+	 * 
+	 * public static boolean findNext(String start, Set<String> set, Set<String>
+	 * dict) { for (String string : dict) { if (!set.contains(oneDiff(start,
+	 * string))) { return true; } } return false; }
+	 */
+
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		start = start.toUpperCase();
+		end = end.toUpperCase();
 		Queue<Node> q = new LinkedList<Node>();
 		ArrayList<String> neighbors = new ArrayList<String>();
 		Set<String> dict = makeDictionary();
-/*		Set<String> dict = new HashSet<String>();
-		dict.add("SMART");
-		dict.add("START");
-		dict.add("STARS");*/
-		
+		/*
+		 * Set<String> dict = new HashSet<String>(); dict.add("SMART");
+		 * dict.add("START"); dict.add("STARS");
+		 */
+
 		q.add(new Node(start, null, true));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Node current = q.remove();
 			dict.remove(current.word);
-			if(current.word.equals(end)){
+			if (current.word.equals(end)) {
 				ArrayList<String> path = new ArrayList<String>();
-				while(!current.word.equals(start)) {
+				while (!current.word.equals(start)) {
 					path.add(0, current.word);
 					current = current.parent;
 				}
 				path.add(0, start);
-				return path;			
-			}
-			else {
+				return path;
+			} else {
 				neighbors.clear();
 				Collection<String> removeFromDict = new LinkedList<String>();
-				for(String string : dict) {
-					if(oneDiff(current.word, string)) {
+				for (String string : dict) {
+					if (oneDiff(current.word, string)) {
 						neighbors.add(string);
 						removeFromDict.add(string);
 					}
 				}
 				dict.removeAll(removeFromDict);
-				if(!neighbors.isEmpty()) {
-					for(String string : neighbors) {
+				if (!neighbors.isEmpty()) {
+					for (String string : neighbors) {
 						q.add(new Node(string, current, true));
 					}
 				}
 			}
 		}
+		neighbors.clear();
 		return neighbors;
 
-	 // replace this line later with real return
+		// replace this line later with real return
 	}
 
 	public static Set<String> makeDictionary() {
