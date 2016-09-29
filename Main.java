@@ -70,8 +70,8 @@ public class Main {
 		String[] parsed;
 		ArrayList<String> list = new ArrayList<String>();
 
-		input = ((keyboard.nextLine()).trim()).toUpperCase();
-		if (input.contains("/QUIT")) {
+		input = ((keyboard.nextLine()).trim());
+		if (input.contains("/quit")) {
 			System.exit(0);
 		}
 		parsed = input.split(" +");
@@ -99,6 +99,9 @@ public class Main {
 		}
 		if (!endWord.equals(end)) {
 			endWord = end;
+		}
+		if ((endWord.contains("/QUIT")) || (startWord.contains("/QUIT"))) {
+			System.exit(0);
 		}
 		Set<String> dict = makeDictionary();
 		Set<String> set = new HashSet<String>();
@@ -141,7 +144,7 @@ public class Main {
 		usedWords.add(start);
 		for (String string : dict) {
 			if (!usedWords.contains(string) && oneDiff(start, string)) {
-				ArrayList<String> temp = helperDFS(string, end, usedWords, dict, ladder);
+				helperDFS(string, end, usedWords, dict, ladder);
 				if (!ladder.isEmpty()) {
 					ladder.add(0, start);
 					return ladder;
@@ -168,6 +171,9 @@ public class Main {
 		}
 		if (!endWord.equals(end)) {
 			endWord = end;
+		}
+		if ((endWord.contains("/QUIT")) || (startWord.contains("/QUIT"))) {
+			System.exit(0);
 		}
 		Queue<Node> q = new LinkedList<Node>();
 		ArrayList<String> neighbors = new ArrayList<String>();
