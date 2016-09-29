@@ -38,8 +38,8 @@ public class Main {
 		ArrayList<String> twoWords = parse(kb);
 		String first = twoWords.get(0);
 		String last = twoWords.get(1);
-		printLadder(getWordLadderDFS(first, last));
-		// printLadder(getWordLadderBFS(first, last));
+		//printLadder(getWordLadderDFS(first, last));
+		printLadder(getWordLadderBFS(first, last));
 	}
 
 	/**
@@ -92,6 +92,8 @@ public class Main {
 	 * @return ladder ArrayList<String> with word ladder
 	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
+		start = start.trim().toUpperCase();
+		end = end.trim().toUpperCase();
 		if (!startWord.equals(start)) {
 			startWord = start;
 		}
@@ -159,6 +161,8 @@ public class Main {
 	 * @return ladder ArrayList<String> with word ladder
 	 */
 	public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		start = start.trim().toUpperCase();
+		end = end.trim().toUpperCase();
 		if (!startWord.equals(start)) {
 			startWord = start;
 		}
